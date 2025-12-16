@@ -77,7 +77,7 @@ const ParallaxSection: React.FC<ParallaxSectionProps> = ({
                 aria-hidden="true"
             />
 
-            {/* Moving Dot Pattern - This moves with parallax */}
+            {/* Moving Icon Pattern - This moves with parallax */}
             <div
                 ref={bgRef}
                 style={{
@@ -86,18 +86,28 @@ const ParallaxSection: React.FC<ParallaxSectionProps> = ({
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    backgroundImage: `
-                      radial-gradient(circle, rgba(208, 138, 78, 0.45) 4px, transparent 4px)
-                    `,
-                    backgroundSize: '80px 80px',
-                    backgroundPosition: '0 0',
-                    opacity: 0.7,
+                    opacity: 0.2,
                     zIndex: 1,
                     pointerEvents: 'none',
-                    willChange: 'transform'
+                    willChange: 'transform',
+                    fontSize: '1.5rem',
+                    userSelect: 'none'
                 }}
                 aria-hidden="true"
-            />
+            >
+                {['♿', '👁️', '👂', '❤️', '🤝', '♿', '👁️', '👂'].map((emoji, i) => (
+                    <span
+                        key={i}
+                        style={{
+                            position: 'absolute',
+                            left: `${(i % 4) * 25 + 10}%`,
+                            top: `${Math.floor(i / 4) * 50 + 25}%`,
+                        }}
+                    >
+                        {emoji}
+                    </span>
+                ))}
+            </div>
 
             {text && (
                 <h2 style={{

@@ -73,7 +73,7 @@ const Hero: React.FC<HeroProps> = ({ title, subtitle, backgroundImage, logoImage
                 }}
             />
 
-            {/* Moving Pattern Overlay - This moves with parallax */}
+            {/* Moving Icon Pattern - This moves with parallax */}
             <div
                 ref={bgRef}
                 style={{
@@ -82,18 +82,30 @@ const Hero: React.FC<HeroProps> = ({ title, subtitle, backgroundImage, logoImage
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    backgroundImage: `
-                      radial-gradient(circle, rgba(208, 138, 78, 0.5) 3px, transparent 3px),
-                      radial-gradient(circle, rgba(240, 203, 122, 0.4) 2px, transparent 2px)
-                    `,
-                    backgroundSize: '100px 100px, 50px 50px',
-                    backgroundPosition: '0 0, 25px 25px',
-                    opacity: 0.7,
+                    opacity: 0.2,
                     zIndex: 0,
                     pointerEvents: 'none',
-                    willChange: 'transform'
+                    willChange: 'transform',
+                    fontSize: '2rem',
+                    userSelect: 'none'
                 }}
-            />
+                aria-hidden="true"
+            >
+                {['♿', '👁️', '👂', '❤️', '🤝', '♿', '👁️', '👂', '❤️', '🤝',
+                  '♿', '👁️', '👂', '❤️', '🤝', '♿', '👁️', '👂', '❤️', '🤝',
+                  '♿', '👁️', '👂', '❤️', '🤝', '♿', '👁️', '👂', '❤️', '🤝'].map((emoji, i) => (
+                    <span
+                        key={i}
+                        style={{
+                            position: 'absolute',
+                            left: `${(i % 6) * 18 + 5}%`,
+                            top: `${Math.floor(i / 6) * 20 + 10}%`,
+                        }}
+                    >
+                        {emoji}
+                    </span>
+                ))}
+            </div>
 
             {/* 3. Content Layer - Static (Relative) */}
             <div
