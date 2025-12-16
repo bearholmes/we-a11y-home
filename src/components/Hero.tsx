@@ -138,7 +138,7 @@ const Hero: React.FC<HeroProps> = ({ title, subtitle, backgroundImage, logoImage
                             src={logoImage}
                             alt="We A11y 로고 - 하트 모양 안에 접근성을 의미하는 a11y 텍스트"
                             style={{
-                                width: '100%',
+                                width: '240px',
                                 height: 'auto',
                                 objectFit: 'contain',
                                 filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.1))'

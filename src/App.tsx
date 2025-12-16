@@ -115,7 +115,7 @@ function App() {
               일상생활로 녹아드는 접근성
             </h2>
             <p style={{ textAlign: 'center', color: 'var(--color-text)', marginBottom: '2rem', lineHeight: 1.8 }}>
-              기능적 필요를 일상 시나리오로 확장했습니다. 장면이 바뀌어도 동일한 설계 원칙이 채널 전반에 적용돼야 합니다.
+             일상생활 중 상황이 바뀌어도 동일한 설계 원칙이 채널 전반에 적용돼야 합니다.
             </p>
             <div className="feature-grid-wide">
               {[
