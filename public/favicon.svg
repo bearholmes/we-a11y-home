@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="favicon-title">
+  <title id="favicon-title">We A11y - 모두를 위한 접근성</title>
+  <!-- Red Heart -->
+  <path d="M256 448l-30.16-27.42C118.7 323.1 48 259.1 48 180.5 48 116.5 98.5 66.5 162.5 66.5c35.84 0 70.2 16.7 93.5 43.16 23.3-26.46 57.66-43.16 93.5-43.16 64 0 114.5 50 114.5 114 0 78.6-70.7 142.6-177.84 240.08L256 448z" fill="#E63946"/>
+  <!-- "A11y" Text -->
+  <text x="50%" y="45%" font-family="Arial, sans-serif" font-weight="900" font-size="200" fill="none" text-anchor="middle" dy=".35em" stroke="#000" stroke-width="36" stroke-linejoin="round" aria-label="Accessibility">WA</text>
+  <text x="50%" y="45%" font-family="Arial, sans-serif" font-weight="900" font-size="200" fill="#fff" text-anchor="middle" dy=".35em" aria-label="Accessibility">WA</text>
+</svg>
