@@ -3,6 +3,7 @@ import ContentBlock from './components/ContentBlock';
 import ParallaxSection from './components/ParallaxSection';
 import Footer from './components/Footer';
 import FeatureCard from './components/FeatureCard';
+import conceptLogo from './assets/concept_nobg.png';
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
             radial-gradient(circle at 80% 70%, rgba(240, 203, 122, 0.2) 0, transparent 42%)
           "
           // Using the existing logo, ensure it looks okay on light bg or ask for update later
-          logoImage="/concept_nobg.png?v=pastel"
+          logoImage={conceptLogo}
         />
       </section>
 
