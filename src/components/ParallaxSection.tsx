@@ -95,13 +95,13 @@ const ParallaxSection: React.FC<ParallaxSectionProps> = ({
                 }}
                 aria-hidden="true"
             >
-                {['♿', '👁️', '👂', '❤️', '🤝', '♿', '👁️', '👂'].map((emoji, i) => (
+                {['♿', '👁️', '👂', '❤️', '🤝', '♿', '👁️', '👂', '❤️', '🤝', '♿', '👁️'].map((emoji, i) => (
                     <span
                         key={i}
                         style={{
                             position: 'absolute',
                             left: `${(i % 4) * 25 + 10}%`,
-                            top: `${Math.floor(i / 4) * 50 + 25}%`,
+                            top: `${Math.floor(i / 4) * 40 + 15}%`,
                         }}
                     >
                         {emoji}
