@@ -12,7 +12,7 @@ const ContentBlock: React.FC<ContentBlockProps> = ({
     textColor = 'var(--color-text)'
 }) => {
     return (
-        <section
+        <div
             style={{
                 position: 'relative',
                 padding: '80px 0',
@@ -24,7 +24,7 @@ const ContentBlock: React.FC<ContentBlockProps> = ({
             <div className="container">
                 {children}
             </div>
-        </section>
+        </div>
     );
 };
 

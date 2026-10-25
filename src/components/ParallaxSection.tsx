@@ -110,15 +110,17 @@ const ParallaxSection: React.FC<ParallaxSectionProps> = ({
             </div>
 
             {text && (
-                <h2 style={{
+                <p style={{
                     fontSize: '2rem',
+                    fontWeight: 700,
+                    padding: '0 24px',
                     color: textColor,
                     textAlign: 'center',
                     position: 'relative',
                     zIndex: 2 // Text at level 2 (above background)
                 }}>
                     {text}
-                </h2>
+                </p>
             )}
         </div>
     );

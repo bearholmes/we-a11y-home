@@ -39,7 +39,9 @@ const Hero: React.FC<HeroProps> = ({ title, subtitle, backgroundImage, logoImage
         <header
             className="hero-section"
             style={{
-                height: '100vh',
+                minHeight: '100svh',
+                boxSizing: 'border-box',
+                padding: '48px 0',
                 position: 'relative',
                 overflow: 'hidden',
                 display: 'flex',
@@ -137,7 +139,9 @@ const Hero: React.FC<HeroProps> = ({ title, subtitle, backgroundImage, logoImage
                     }}>
                         <img
                             src={logoImage}
-                            alt="We A11y 로고 - 하트 모양 안에 접근성을 의미하는 a11y 텍스트"
+                            alt="We ❤️A11y"
+                            width={810}
+                            height={176}
                             style={{
                                 width: '240px',
                                 height: 'auto',
@@ -149,7 +153,7 @@ const Hero: React.FC<HeroProps> = ({ title, subtitle, backgroundImage, logoImage
                 )}
 
                 <h1 style={{
-                    fontSize: '4rem',
+                    fontSize: 'clamp(2rem, 5vw, 4rem)',
                     fontWeight: 800,
                     letterSpacing: '-0.02em',
                     color: 'inherit',
@@ -160,7 +164,7 @@ const Hero: React.FC<HeroProps> = ({ title, subtitle, backgroundImage, logoImage
                 </h1>
                 {subtitle && (
                     <p style={{
-                        fontSize: '1.75rem',
+                        fontSize: 'clamp(1.1rem, 2.5vw, 1.75rem)',
                         color: 'var(--color-text)',
                         maxWidth: '800px',
                         margin: '0 auto',
@@ -169,6 +173,10 @@ const Hero: React.FC<HeroProps> = ({ title, subtitle, backgroundImage, logoImage
                         {subtitle}
                     </p>
                 )}
+                <div className="cta-group">
+                    <a className="cta-link" href="#why-accessibility">접근성 알아보기</a>
+                    <a className="cta-link cta-secondary" href="#everyone-responsibility">오늘의 실천 시작하기</a>
+                </div>
             </div>
         </header>
     );
