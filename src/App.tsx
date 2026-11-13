@@ -150,7 +150,7 @@ function App() {
           </ContentBlock>
         </section>
 
-        {/* Visual Parallax Divider */}
+        {/* Visual Parallax Divider 1 */}
         <section aria-label="웹 접근성 전환 질문">
           <ParallaxSection
             backgroundImage="
@@ -161,6 +161,11 @@ function App() {
             height="42vh"
             text="웹 접근성만 준수하면 되나요?"
             textColor="var(--color-text)"
+            bgArtwork={{
+              imageSrc: '/images/connected-life-accessibility.jpg',
+              viewBox: '40 20 1200 360',
+              opacity: 0.24,
+            }}
           />
         </section>
 
@@ -208,7 +213,7 @@ function App() {
           </ContentBlock>
         </section>
 
-        {/* Parallax Divider - WCAG 3.0 direction */}
+        {/* Parallax Divider 2 */}
         <section aria-label="생활 접근성 점검 제안">
           <ParallaxSection
             backgroundImage="
@@ -219,6 +224,11 @@ function App() {
             height="45vh"
             text="생활 접근성, WCAG 3.0 관점에서 점검하기"
             textColor="var(--color-text)"
+            bgArtwork={{
+              imageSrc: '/images/everyday-accessibility.jpg',
+              viewBox: '40 20 1200 674',
+              opacity: 0.22,
+            }}
           />
         </section>
 
@@ -298,7 +308,7 @@ function App() {
           </ContentBlock>
         </section>
 
-        {/* Final Call to Action Parallax */}
+        {/* Final Call to Action Parallax - Team Collaboration in Background */}
         <section aria-label="행동 촉구">
           <ParallaxSection
             backgroundImage="
@@ -306,9 +316,14 @@ function App() {
               radial-gradient(circle at 18% 32%, rgba(255, 255, 255, 0.18) 0, transparent 46%),
               radial-gradient(circle at 78% 62%, rgba(255, 255, 255, 0.12) 0, transparent 38%)
             "
-            height="50vh"
+            height="54vh"
             text="접근성 함께 시작해요"
             textColor="var(--color-text)"
+            bgArtwork={{
+              imageSrc: '/images/team-collaboration.jpg',
+              viewBox: '50 55 1180 600',
+              opacity: 0.3,
+            }}
           />
         </section>
       </main>

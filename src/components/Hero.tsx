@@ -9,9 +9,49 @@ interface HeroProps {
   logoImage?: string;
 }
 
+interface HeroBgFigure {
+  id: string;
+  imageSrc: string;
+  viewBox: string;
+  className: string;
+  depth: number;
+}
+
+const HERO_BG_FIGURES: HeroBgFigure[] = [
+  {
+    id: 'sunlight-user',
+    imageSrc: '/images/everyday-accessibility.jpg',
+    viewBox: '55 25 480 380',
+    className: 'hero-bg-fig hero-bg-fig-lt',
+    depth: -0.28,
+  },
+  {
+    id: 'senior-user',
+    imageSrc: '/images/everyday-accessibility.jpg',
+    viewBox: '670 25 380 365',
+    className: 'hero-bg-fig hero-bg-fig-rt',
+    depth: -0.22,
+  },
+  {
+    id: 'onehand-user',
+    imageSrc: '/images/everyday-accessibility.jpg',
+    viewBox: '305 335 375 355',
+    className: 'hero-bg-fig hero-bg-fig-lb',
+    depth: -0.36,
+  },
+  {
+    id: 'mobility-user',
+    imageSrc: '/images/connected-life-accessibility.jpg',
+    viewBox: '875 65 320 285',
+    className: 'hero-bg-fig hero-bg-fig-rb',
+    depth: -0.3,
+  },
+];
+
 const Hero: React.FC<HeroProps> = ({ title, subtitle, backgroundImage, logoImage }) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const auraRef = useRef<HTMLDivElement>(null);
+  const figRefs = useRef<Array<HTMLDivElement | null>>([]);
   const { reducedMotion } = useMotionPreference();
 
   useEffect(() => {
@@ -23,6 +63,9 @@ const Hero: React.FC<HeroProps> = ({ title, subtitle, backgroundImage, logoImage
       if (auraRef.current) {
         auraRef.current.style.transform = 'none';
       }
+      figRefs.current.forEach((el) => {
+        if (el) el.style.transform = 'none';
+      });
       return;
     }
 
@@ -46,6 +89,12 @@ const Hero: React.FC<HeroProps> = ({ title, subtitle, backgroundImage, logoImage
       if (auraRef.current) {
         auraRef.current.style.transform = `translate3d(0, ${(scrollY * 0.1).toFixed(1)}px, 0) scale(${(1 + ratio * 0.12).toFixed(3)})`;
       }
+
+      figRefs.current.forEach((el, idx) => {
+        if (!el) return;
+        const yMove = scrollY * HERO_BG_FIGURES[idx].depth;
+        el.style.transform = `translate3d(0, ${yMove.toFixed(1)}px, 0)`;
+      });
     };
 
     const handleScroll = () => {
@@ -80,6 +129,24 @@ const Hero: React.FC<HeroProps> = ({ title, subtitle, backgroundImage, logoImage
         }}
         aria-hidden="true"
       />
+
+      {/* Seamless Background Character Layer (Blended directly into Hero background, no card boxes) */}
+      <div className="hero-bg-figures-layer" aria-hidden="true">
+        {HERO_BG_FIGURES.map((fig, idx) => (
+          <div
+            key={fig.id}
+            ref={(el) => {
+              figRefs.current[idx] = el;
+            }}
+            className={fig.className}
+          >
+            <svg viewBox={fig.viewBox} className="bg-blended-svg">
+              <image href={fig.imageSrc} x="0" y="0" width="1280" height="714" />
+            </svg>
+          </div>
+        ))}
+      </div>
+
       <div ref={auraRef} className="hero-focus-aura" aria-hidden="true" />
 
       <div ref={contentRef} className="hero-content container">
