@@ -1,177 +1,179 @@
 import React, { useEffect, useRef } from 'react';
-
+import { ChevronDown } from 'lucide-react';
+import { useMotionPreference } from '../hooks/useMotionPreference';
 
 interface HeroProps {
-    title: string;
-    subtitle?: string;
-    backgroundImage?: string;
-    logoImage?: string;
+  title: string;
+  subtitle?: string;
+  backgroundImage?: string;
+  logoImage?: string;
 }
 
+interface HeroBgFigure {
+  id: string;
+  imageSrc: string;
+  viewBox: string;
+  className: string;
+  depth: number;
+}
+
+const HERO_BG_FIGURES: HeroBgFigure[] = [
+  {
+    id: 'sunlight-user',
+    imageSrc: '/images/everyday-accessibility.jpg',
+    viewBox: '55 25 480 380',
+    className: 'hero-bg-fig hero-bg-fig-lt',
+    depth: -0.28,
+  },
+  {
+    id: 'senior-user',
+    imageSrc: '/images/everyday-accessibility.jpg',
+    viewBox: '670 25 380 365',
+    className: 'hero-bg-fig hero-bg-fig-rt',
+    depth: -0.22,
+  },
+  {
+    id: 'onehand-user',
+    imageSrc: '/images/everyday-accessibility.jpg',
+    viewBox: '305 335 375 355',
+    className: 'hero-bg-fig hero-bg-fig-lb',
+    depth: -0.36,
+  },
+  {
+    id: 'mobility-user',
+    imageSrc: '/images/connected-life-accessibility.jpg',
+    viewBox: '875 65 320 285',
+    className: 'hero-bg-fig hero-bg-fig-rb',
+    depth: -0.3,
+  },
+];
+
 const Hero: React.FC<HeroProps> = ({ title, subtitle, backgroundImage, logoImage }) => {
-    const bgRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const auraRef = useRef<HTMLDivElement>(null);
+  const figRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const { reducedMotion } = useMotionPreference();
 
-    useEffect(() => {
-        const handleScroll = () => {
-            if (!bgRef.current) return;
+  useEffect(() => {
+    if (reducedMotion) {
+      if (contentRef.current) {
+        contentRef.current.style.transform = 'none';
+        contentRef.current.style.opacity = '1';
+      }
+      if (auraRef.current) {
+        auraRef.current.style.transform = 'none';
+      }
+      figRefs.current.forEach((el) => {
+        if (el) el.style.transform = 'none';
+      });
+      return;
+    }
 
-            // Check for reduced motion preference
-            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            if (prefersReducedMotion) return;
+    let rafId = 0;
 
-            const scrollY = window.scrollY;
-            const offset = scrollY * -0.4; // Pattern moves upward (opposite to scroll)
-            bgRef.current.style.transform = `translateY(${offset}px)`;
-        };
+    const update = () => {
+      const scrollY = window.scrollY;
+      const vh = window.innerHeight || 800;
+      if (scrollY > vh * 1.15) return;
 
-        // Initial call
-        handleScroll();
+      const ratio = Math.min(1, Math.max(0, scrollY / (vh * 0.78)));
 
-        // Add scroll listener
-        window.addEventListener('scroll', handleScroll, { passive: true });
+      if (contentRef.current) {
+        const yOffset = scrollY * 0.22;
+        const scale = 1 - ratio * 0.05;
+        const opacity = Math.max(0, 1 - ratio * 1.05);
+        contentRef.current.style.transform = `translate3d(0, ${yOffset.toFixed(1)}px, 0) scale(${scale.toFixed(3)})`;
+        contentRef.current.style.opacity = `${opacity.toFixed(3)}`;
+      }
 
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
+      if (auraRef.current) {
+        auraRef.current.style.transform = `translate3d(0, ${(scrollY * 0.1).toFixed(1)}px, 0) scale(${(1 + ratio * 0.12).toFixed(3)})`;
+      }
 
-    return (
-        <header
-            className="hero-section"
-            style={{
-                height: '100vh',
-                position: 'relative',
-                overflow: 'hidden',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+      figRefs.current.forEach((el, idx) => {
+        if (!el) return;
+        const yMove = scrollY * HERO_BG_FIGURES[idx].depth;
+        el.style.transform = `translate3d(0, ${yMove.toFixed(1)}px, 0)`;
+      });
+    };
+
+    const handleScroll = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [reducedMotion]);
+
+  return (
+    <header id="hero-top" className="hero-section">
+      <div
+        className="hero-background"
+        style={{
+          background: backgroundImage
+            ? backgroundImage.includes('gradient')
+              ? backgroundImage
+              : `url(${backgroundImage}) center/cover`
+            : `
+              radial-gradient(circle at 20% 30%, rgba(208, 138, 78, 0.2) 0, transparent 48%),
+              radial-gradient(circle at 80% 70%, rgba(240, 203, 122, 0.2) 0, transparent 45%),
+              linear-gradient(120deg, #fffaf3 0%, #f3e7d8 45%, #d3b898 100%)
+            `,
+          backgroundSize: backgroundImage?.includes('gradient') ? '140% 140%' : 'cover',
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Seamless Background Character Layer (Blended directly into Hero background, no card boxes) */}
+      <div className="hero-bg-figures-layer" aria-hidden="true">
+        {HERO_BG_FIGURES.map((fig, idx) => (
+          <div
+            key={fig.id}
+            ref={(el) => {
+              figRefs.current[idx] = el;
             }}
-        >
-            {/* Fixed Background Layer - Stays still */}
-            <div
-                className="hero-background"
-                style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    // Support both URL and direct gradient strings
-                    background: backgroundImage
-                        ? (backgroundImage.includes('gradient') ? backgroundImage : `url(${backgroundImage}) center/cover`)
-                        : `
-                        radial-gradient(circle at 20% 30%, rgba(233, 122, 138, 0.25) 0, transparent 45%),
-                        radial-gradient(circle at 80% 70%, rgba(143, 185, 214, 0.25) 0, transparent 40%),
-                        linear-gradient(120deg, #fff9fb 0%, #f6f0f2 45%, #f0b27a 100%)
-                    `,
-                    backgroundSize: backgroundImage?.includes('gradient') ? '140% 140%' : 'cover',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                    zIndex: 0,
-                    backgroundColor: '#f6f0f2',
-                    pointerEvents: 'none'
-                }}
+            className={fig.className}
+          >
+            <svg viewBox={fig.viewBox} className="bg-blended-svg">
+              <image href={fig.imageSrc} x="0" y="0" width="1280" height="714" />
+            </svg>
+          </div>
+        ))}
+      </div>
+
+      <div ref={auraRef} className="hero-focus-aura" aria-hidden="true" />
+
+      <div ref={contentRef} className="hero-content container">
+        {logoImage && (
+          <div className="hero-logo-stage hero-enter-1">
+            <img
+              src={logoImage}
+              alt="We A11y 로고 - 하트 모양 안에 접근성을 의미하는 a11y 텍스트"
+              className="hero-logo-img"
             />
+          </div>
+        )}
 
-            {/* Moving Icon Pattern - This moves with parallax */}
-            <div
-                ref={bgRef}
-                style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    opacity: 0.2,
-                    zIndex: 0,
-                    pointerEvents: 'none',
-                    willChange: 'transform',
-                    fontSize: '2rem',
-                    userSelect: 'none'
-                }}
-                aria-hidden="true"
-            >
-                {['♿', '👁️', '👂', '❤️', '🤝', '♿', '👁️', '👂', '❤️', '🤝',
-                  '♿', '👁️', '👂', '❤️', '🤝', '♿', '👁️', '👂', '❤️', '🤝',
-                  '♿', '👁️', '👂', '❤️', '🤝', '♿', '👁️', '👂', '❤️', '🤝',
-                  '♿', '👁️', '👂', '❤️', '🤝', '♿'].map((emoji, i) => (
-                    <span
-                        key={i}
-                        style={{
-                            position: 'absolute',
-                            left: `${(i % 6) * 18 + 5}%`,
-                            top: `${Math.floor(i / 6) * 18 + 0}%`,
-                        }}
-                    >
-                        {emoji}
-                    </span>
-                ))}
-            </div>
+        <h1 className="hero-title hero-enter-2">{title}</h1>
+        {subtitle && <p className="hero-subtitle hero-enter-3">{subtitle}</p>}
+      </div>
 
-            {/* 3. Content Layer - Static (Relative) */}
-            <div
-                className="hero-content container"
-                style={{
-                    position: 'relative',
-                    zIndex: 1,
-                    textAlign: 'center',
-                    color: 'var(--color-text)', // Dark text for contrast on light gradient
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '2rem',
-                }}
-            >
-                {/* Logo Section Removed or Separate Prop needed if they want a logo */}
-                {/* Previously backgroundImage was here as an img tag. Removed to fix the "Background not working" issue. */}
-
-                {/* Logo Image */}
-                {logoImage && (
-                    <div style={{
-                        maxWidth: '300px',
-                        width: '100%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        marginBottom: '2rem',
-                    }}>
-                        <img
-                            src={logoImage}
-                            alt="We A11y 로고 - 하트 모양 안에 접근성을 의미하는 a11y 텍스트"
-                            style={{
-                                width: '240px',
-                                height: 'auto',
-                                objectFit: 'contain',
-                                filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.1))'
-                            }}
-                        />
-                    </div>
-                )}
-
-                <h1 style={{
-                    fontSize: '4rem',
-                    fontWeight: 800,
-                    letterSpacing: '-0.02em',
-                    color: 'inherit',
-                    marginBottom: '0',
-                    textShadow: '0 4px 12px rgba(0, 0, 0, 0.12)'
-                }}>
-                    {title}
-                </h1>
-                {subtitle && (
-                    <p style={{
-                        fontSize: '1.75rem',
-                        color: 'var(--color-text)',
-                        maxWidth: '800px',
-                        margin: '0 auto',
-                        fontWeight: 700
-                    }}>
-                        {subtitle}
-                    </p>
-                )}
-            </div>
-        </header>
-    );
+      <a
+        href="#why-accessibility-section"
+        className="hero-scroll-cue"
+        aria-label="웹접근성은 왜 필요한가요 섹션으로 이동"
+      >
+        <span className="hero-scroll-cue-label">아래로 스크롤</span>
+        <ChevronDown size={18} className="hero-scroll-chevron" aria-hidden="true" />
+      </a>
+    </header>
+  );
 };
 
 export default Hero;
